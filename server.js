@@ -12,6 +12,10 @@ const database = require('./database');
 database.initializeSchema().catch(() => process.exit(1));
 
 // Fastify
+fastify.register(require('fastify-cors'), { 
+	origin: '*'
+});
+
 fastify.get('/', async (req, res) => {
 	return { name: 'Hydrant API', version: process.env.npm_package_version }
 })
