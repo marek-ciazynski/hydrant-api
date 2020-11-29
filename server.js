@@ -18,7 +18,7 @@ fastify.get('/', async (req, res) => {
 
 fastify.register(require('./routes'), { prefix: '/api' });
 
-fastify.listen(config.port, (err) => {
+fastify.listen(config.port, '0.0.0.0', (err, address) => {
 	if (err) {
 		fastify.log.error(err);
 		process.exit(1);
