@@ -1,8 +1,11 @@
 'use strict';
 const log = require('../../logger');
+const measurementStore = require('../measurementStore');
 
 const { bluetooth } = require('webbluetooth');
 
+
+const INCOMING_DATA_INTERVAL = 2000;
 
 const UART = {
 	SERVICE_UUID: "6e400001-b5a3-f393-e0a9-e50e24dcca9e",
@@ -24,19 +27,20 @@ const device = {
 	services: [UART],
 
 	// Connection
+	bleDevice: null,
 	txCharacteristic: null,
 	rxCharacteristic: null,
 
 	async connect() {
 		log.info('Connect()');
 		try {
-			const bleDevice = await bluetooth.requestDevice({
+			this.bleDevice = await bluetooth.requestDevice({
 				filters: [{ namePrefix: "BBC micro:bit" }],
-				optionalServices: [UART.SERVICE_UUID] //this.services.map(s => s.SERVICE_UUID)
+				optionalServices: this.services.map(s => s.SERVICE_UUID)
 			});
-			
+
 			log.info('Connecting to GATT Server...');
-			const server = await bleDevice.gatt.connect();
+			const server = await this.bleDevice.gatt.connect();
 			
 			log.info('Getting Service...');
 			const service = await server.getPrimaryService(this.UART.SERVICE_UUID);
@@ -74,6 +78,9 @@ const device = {
 				const fps = 1000000 / parseInt(dataValue);
 				log.info(` FPS = ${fps}`)
 			}
+
+			measurementStore.saveMeasurement(this.bleDevice.id, dataType, parseFloat(dataValue),
+				dataType !== 'Delta' ? INCOMING_DATA_INTERVAL : null)
 		};
 
 		this.txCharacteristic.startNotifications();

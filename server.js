@@ -3,14 +3,13 @@
 const config = require('./config/config');
 const log = require('./logger');
 
-const sqlite3 = require('sqlite3').verbose();
-
 const fastify = require('fastify')({
 	logger: log,
 });
 
 // sqlite
-const db = new sqlite3.Database(config.sqliteDatabase);
+const database = require('./database');
+database.initializeSchema().catch(() => process.exit(1));
 
 // Fastify
 fastify.get('/', async (req, res) => {

@@ -17,7 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "fastify": "^3.8.0",
-    "sqlite3": "^5.0.0",
+    "sqlite3": "4.2.0",
     "webbluetooth": "^2.1.0"
   },
   "devDependencies": {
