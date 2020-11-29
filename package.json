@@ -1,0 +1,27 @@
+{
+  "name": "hydrant-api",
+  "version": "1.0.0",
+  "description": "API for retrieving measurements from water flow sensors",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:dev": "nodemon server.js"
+  },
+  "keywords": [
+    "hackathon",
+    "water",
+    "api",
+    "iot"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^3.8.0",
+    "sqlite3": "^5.0.0",
+    "webbluetooth": "^2.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6",
+    "pino-pretty": "^4.3.0"
+  }
+}
