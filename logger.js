@@ -1,7 +1,8 @@
 'use strict';
 
 const loggerConfig = {
-	level: 'debug',
+	// level: 'debug',
+	level: 'info',
 	prettyPrint: true,
 };
 

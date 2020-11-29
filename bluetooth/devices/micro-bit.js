@@ -61,11 +61,19 @@ const device = {
 			for (var i = 0; i < event.target.value.byteLength; i++) {
 				receivedData[i] = event.target.value.getUint8(i);
 			}
-			log.debug(receivedData)
+			
+			const receivedString = String.fromCharCode(...receivedData).trim();
+			log.debug(receivedString)
 
-			const receivedString = String.fromCharCode(...receivedData);
-			const fps = 1000000 / parseInt(receivedString);
-			log.debug(`Received BT data: delta = ${receivedString}, FPS = ${fps}`)
+			// const message = JSON.parse(receivedString);
+			// log.info('Received BT data: ' + message)
+
+			const [ dataType, dataValue ] = receivedString.split(':');
+			log.info(`Received BT data: ${dataType} = ${dataValue}`)
+			if (dataType === 'Delta') {
+				const fps = 1000000 / parseInt(dataValue);
+				log.info(` FPS = ${fps}`)
+			}
 		};
 
 		this.txCharacteristic.startNotifications();
